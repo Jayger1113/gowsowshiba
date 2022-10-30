@@ -1,7 +1,17 @@
 package com.gowsow.shiba.repository.login;
 
 
+import android.util.Log;
+
 import com.gowsow.shiba.entity.login.LoggedInUser;
+import com.gowsow.shiba.util.NetworkUtils;
+
+import org.json.JSONObject;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import okhttp3.Response;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -44,9 +54,9 @@ public class LoginRepository {
         // @see https://developer.android.com/training/articles/keystore
     }
 
-    public Result<LoggedInUser> login(String username, String password) {
+    public Result<LoggedInUser> login(String email, String password) {
         // handle login
-        Result<LoggedInUser> result = dataSource.login(username, password);
+        Result<LoggedInUser> result = dataSource.login(email, password);
         if (result instanceof Result.Success) {
             setLoggedInUser(((Result.Success<LoggedInUser>) result).getData());
         }
