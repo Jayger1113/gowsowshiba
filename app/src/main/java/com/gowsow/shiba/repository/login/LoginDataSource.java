@@ -1,6 +1,7 @@
-package com.gowsow.shiba.data;
+package com.gowsow.shiba.repository.login;
 
-import com.gowsow.shiba.data.model.LoggedInUser;
+
+import com.gowsow.shiba.entity.login.LoggedInUser;
 
 import java.io.IOException;
 

@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 
-import com.gowsow.shiba.data.LoginDataSource;
-import com.gowsow.shiba.data.LoginRepository;
+import com.gowsow.shiba.repository.login.LoginDataSource;
+import com.gowsow.shiba.repository.login.LoginRepository;
+
 
 /**
  * ViewModel provider factory to instantiate LoginViewModel.

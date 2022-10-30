@@ -1,4 +1,4 @@
-package com.gowsow.shiba.data.model;
+package com.gowsow.shiba.entity.login;
 
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository

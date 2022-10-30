@@ -1,15 +1,15 @@
 package com.gowsow.shiba.ui.login;
 
+import android.util.Patterns;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import android.util.Patterns;
-
-import com.gowsow.shiba.data.LoginRepository;
-import com.gowsow.shiba.data.Result;
-import com.gowsow.shiba.data.model.LoggedInUser;
 import com.gowsow.shiba.R;
+import com.gowsow.shiba.entity.login.LoggedInUser;
+import com.gowsow.shiba.repository.login.LoginRepository;
+import com.gowsow.shiba.repository.login.Result;
 
 public class LoginViewModel extends ViewModel {
 

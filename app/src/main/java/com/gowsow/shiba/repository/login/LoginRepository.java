@@ -1,6 +1,7 @@
-package com.gowsow.shiba.data;
+package com.gowsow.shiba.repository.login;
 
-import com.gowsow.shiba.data.model.LoggedInUser;
+
+import com.gowsow.shiba.entity.login.LoggedInUser;
 
 /**
  * Class that requests authentication and user information from the remote data source and
