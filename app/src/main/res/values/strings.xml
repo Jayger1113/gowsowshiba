@@ -9,4 +9,10 @@
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password cannot be empty</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="login_url"></string>
+
+    <!-- logout -->
+    <string name="action_sign_out">Sign out</string>
+    <string name="logout_failed">"Logout failed"</string>
+    <string name="logout_url"></string>
 </resources>

@@ -38,15 +38,15 @@ public class LoginViewModel extends ViewModel {
         return loginResult;
     }
 
-    public void login(String email, String password) {
-        Log.d(TAG, "login");
+    public void login(String url, String email, String password) {
+        Log.d(TAG, "login, email: " + email + " ,password: " + password);
         // can be launched in a separate asynchronous job
         Observable.fromCallable(() -> {
                     //TODO: encapsulate datasource
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("email", email);
                     jsonObject.put("mima", password);
-                    Response response = NetworkUtils.postJson(jsonObject.toString(), "", NetworkUtils.OkHttpClientEnum.TIMEOUT10);
+                    Response response = NetworkUtils.postJson(jsonObject.toString(), url, NetworkUtils.OkHttpClientEnum.TIMEOUT10);
                     String responseString = response.peekBody(2048).string();
                     Log.d(TAG, "login response from server: " + responseString);
                     try {
@@ -70,14 +70,37 @@ public class LoginViewModel extends ViewModel {
                         loginResult.setValue(new LoginResult(R.string.login_failed));
                     }
                 });
-        //                    Result<LoggedInUser> loggedInUserResult = loginRepository.login(email, password);
-//
-//                    if (loggedInUserResult instanceof Result.Success) {
-//                        LoggedInUser data = ((Result.Success<LoggedInUser>) loggedInUserResult).getData();
-//                        loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-//                    } else {
-//                        loginResult.setValue(new LoginResult(R.string.login_failed));
-//                    }
+
+    }
+
+    public void logout(String url, String email) {
+        Observable.fromCallable(() -> {
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("email", email);
+                    Response response = NetworkUtils.postJson(jsonObject.toString(), url, NetworkUtils.OkHttpClientEnum.TIMEOUT10);
+                    String responseString = response.peekBody(2048).string();
+                    Log.d(TAG, "logout response from server: " + responseString);
+                    try {
+                        JSONObject jsonFromServer = new JSONObject(responseString);
+                        if (jsonFromServer.has("status")) {
+                            return (jsonFromServer.getInt("status") == 0) ? true : false;
+                        }
+                    } catch (Exception e) {
+                        Log.d("logout Error: ", e.toString());
+                    }
+                    return false;
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((result) -> {
+                    //Use result for display corresponding UI
+                    Log.d(TAG, "logout result: " + result);
+                    if (result.booleanValue()) {
+                        loginResult.setValue(new LoginResult(new LogOutUserView(email)));
+                    } else {
+                        loginResult.setValue(new LoginResult(R.string.logout_failed));
+                    }
+                });
     }
 
     public void loginDataChanged(String email, String password) {

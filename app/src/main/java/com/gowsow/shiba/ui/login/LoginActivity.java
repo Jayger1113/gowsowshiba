@@ -37,10 +37,14 @@ public class LoginActivity extends AppCompatActivity {
         initUI();
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
+    private void updateLoginSuccessUi(LoggedInUserView loggedInUserView) {
+        String welcome = getString(R.string.welcome) + loggedInUserView.getDisplayName();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+    }
+
+    private void updateLogoutSuccessUi(LogOutUserView logOutUserView) {
+        String logout = logOutUserView.getDisplayName() + " " + getString(R.string.action_sign_out);
+        Toast.makeText(getApplicationContext(), logout, Toast.LENGTH_LONG).show();
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
@@ -54,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;
         final Button loginButton = binding.login;
+        final Button logoutButton = binding.logout;
         final ProgressBar loadingProgressBar = binding.loading;
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
@@ -82,14 +87,13 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResult.getError() != null) {
                     showLoginFailed(loginResult.getError());
                 }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
+                if (loginResult.getLoginUserView() != null) {
+                    updateLoginSuccessUi(loginResult.getLoginUserView());
+                }
+                if (loginResult.getLogoutView() != null) {
+                    updateLogoutSuccessUi(loginResult.getLogoutView());
                 }
                 setResult(Activity.RESULT_OK);
-
-                //TODO: after login UI
-                //Complete and destroy login activity once successful
-//                finish();
             }
         });
 
@@ -117,20 +121,21 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
+                    loginViewModel.login(getString(R.string.login_url),usernameEditText.getText().toString(),
                             passwordEditText.getText().toString());
                 }
                 return false;
             }
         });
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
+        loginButton.setOnClickListener(v -> {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            loginViewModel.login(getString(R.string.login_url),usernameEditText.getText().toString(),
+                    passwordEditText.getText().toString());
+        });
+        logoutButton.setOnClickListener(view -> {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            loginViewModel.logout(getString(R.string.logout_url),usernameEditText.getText().toString());
         });
     }
 
