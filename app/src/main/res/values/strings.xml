@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GowsowShiba</string>
+    <string name="app_name">Login</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -9,10 +9,13 @@
     <string name="invalid_email">Not a valid email</string>
     <string name="invalid_password">Password cannot be empty</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="login_url"></string>
+    <string name="login_url">https://8b1f-111-249-182-90.jp.ngrok.io/user/loginOrRegister</string>
 
     <!-- logout -->
     <string name="action_sign_out">Sign out</string>
     <string name="logout_failed">"Logout failed"</string>
-    <string name="logout_url"></string>
+    <string name="logout_url">https://8b1f-111-249-182-90.jp.ngrok.io/user/logout</string>
+
+    <!-- login status -->
+    <string name="login_status_title">Login Status: </string>
 </resources>

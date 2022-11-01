@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
-
+    private TextView loginStatusText;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,24 +39,25 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateLoginSuccessUi(LoggedInUserView loggedInUserView) {
         String welcome = getString(R.string.welcome) + loggedInUserView.getDisplayName();
-        Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        loginStatusText.setText(welcome);
     }
 
     private void updateLogoutSuccessUi(LogOutUserView logOutUserView) {
         String logout = logOutUserView.getDisplayName() + " " + getString(R.string.action_sign_out);
-        Toast.makeText(getApplicationContext(), logout, Toast.LENGTH_LONG).show();
+        loginStatusText.setText(logout);
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
-        Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
+        loginStatusText.setText(errorString);
     }
 
     private void initUI() {
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = binding.username;
+        final EditText emailEditText = binding.email;
         final EditText passwordEditText = binding.password;
+        loginStatusText = binding.loginStatus;
         final Button loginButton = binding.login;
         final Button logoutButton = binding.logout;
         final ProgressBar loadingProgressBar = binding.loading;
@@ -67,9 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginFormState == null) {
                     return;
                 }
-                loginButton.setEnabled(loginFormState.isDataValid());
                 if (loginFormState.getEmailError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getEmailError()));
+                    emailEditText.setError(getString(loginFormState.getEmailError()));
                 }
                 if (loginFormState.getPasswordError() != null) {
                     passwordEditText.setError(getString(loginFormState.getPasswordError()));
@@ -110,18 +110,18 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
+                loginViewModel.loginDataChanged(emailEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
         };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
+        emailEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(getString(R.string.login_url),usernameEditText.getText().toString(),
+                    loginViewModel.login(getString(R.string.login_url),emailEditText.getText().toString(),
                             passwordEditText.getText().toString());
                 }
                 return false;
@@ -130,12 +130,12 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton.setOnClickListener(v -> {
             loadingProgressBar.setVisibility(View.VISIBLE);
-            loginViewModel.login(getString(R.string.login_url),usernameEditText.getText().toString(),
+            loginViewModel.login(getString(R.string.login_url),emailEditText.getText().toString(),
                     passwordEditText.getText().toString());
         });
         logoutButton.setOnClickListener(view -> {
             loadingProgressBar.setVisibility(View.VISIBLE);
-            loginViewModel.logout(getString(R.string.logout_url),usernameEditText.getText().toString());
+            loginViewModel.logout(getString(R.string.logout_url),emailEditText.getText().toString());
         });
     }
 

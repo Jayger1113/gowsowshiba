@@ -45,6 +45,8 @@ dependencies {
     // rx
     implementation 'io.reactivex.rxjava3:rxjava:3.1.5'
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    // ui automator
+    implementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
