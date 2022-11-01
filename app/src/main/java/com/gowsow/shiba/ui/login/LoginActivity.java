@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final EditText emailEditText = binding.email;
         final EditText passwordEditText = binding.password;
-        loginStatusText = binding.loginStatusFixme;
+        loginStatusText = binding.loginStatus;
         final Button loginButton = binding.login;
         final Button logoutButton = binding.logout;
         final ProgressBar loadingProgressBar = binding.loading;
